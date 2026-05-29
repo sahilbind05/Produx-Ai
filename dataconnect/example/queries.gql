@@ -1,0 +1,21 @@
+type User @table {
+  id: ID!
+  username: String!
+  email: String!
+}
+
+type Product @table {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+}
+
+type Review @table {
+  id: ID!
+  user: User!
+  product: Product!
+  rating: Int!
+  comment: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}

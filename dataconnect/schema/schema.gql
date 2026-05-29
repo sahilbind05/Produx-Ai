@@ -1,0 +1,38 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+  timezone: String
+}
+
+type Goal @table {
+  user: User!
+  name: String!
+  createdAt: Timestamp!
+  description: String
+  targetDate: Date
+  isAchieved: Boolean
+}
+
+type Task @table {
+  user: User!
+  goal: Goal!
+  title: String!
+  status: String!
+  priority: String!
+  createdAt: Timestamp!
+  description: String
+  dueDate: Date
+  scheduledDate: Date
+}
+
+type AIAssistant @table {
+  user: User!
+  goal: Goal
+  task: Task
+  queryText: String!
+  responseText: String!
+  createdAt: Timestamp!
+  context: String
+}
