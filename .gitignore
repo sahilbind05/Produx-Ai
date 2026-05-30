@@ -1,6 +1,10 @@
 node_modules/
 dist/
+<<<<<<< HEAD
 .firebase/
+=======
+.firebase
+>>>>>>> 1d4f3b8 (Remove Firebase cache files)
 .env
 *.local
 .DS_Store
