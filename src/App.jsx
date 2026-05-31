@@ -1,4 +1,6 @@
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { Logo } from "./config/branding.jsx";
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
 
@@ -7,12 +9,10 @@ function AppRouter() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ink-950 flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-slate-900 flex items-center justify-center transition-colors">
         <div className="text-center">
-          <div className="w-8 h-8 border border-jade-500 flex items-center justify-center mx-auto mb-4">
-            <span className="text-jade-500 text-sm">◈</span>
-          </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-jade-500 mx-auto animate-pulse" />
+          <Logo size="lg" showText={false} className="justify-center mb-4" />
+          <div className="w-2 h-2 rounded-full bg-accent-500 mx-auto animate-pulse" />
         </div>
       </div>
     );
@@ -23,8 +23,10 @@ function AppRouter() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppRouter />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

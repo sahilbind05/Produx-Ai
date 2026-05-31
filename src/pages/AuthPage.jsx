@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
+import { Logo, LogoLight } from "../config/branding.jsx";
 
 // ── Reusable input ─────────────────────────────────────────────────────────
 function Input({ label, type = "text", value, onChange, placeholder, error }) {
@@ -8,7 +10,7 @@ function Input({ label, type = "text", value, onChange, placeholder, error }) {
   const isPassword = type === "password";
   return (
     <div className="mb-4">
-      <label className="block text-[11px] font-semibold tracking-widest uppercase text-ink-400 mb-1.5 font-display">
+      <label className="block text-xs font-medium text-surface-600 dark:text-surface-400 mb-1.5">
         {label}
       </label>
       <div className="relative">
@@ -19,22 +21,22 @@ function Input({ label, type = "text", value, onChange, placeholder, error }) {
           placeholder={placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className={`w-full bg-ink-800 border text-ink-100 text-sm font-body px-3.5 py-2.5 rounded-sm outline-none transition-all placeholder:text-ink-500
-            ${focused ? "border-jade-500" : "border-ink-600"}
-            ${error ? "border-rose-500" : ""}
+          className={`w-full bg-surface-50 dark:bg-slate-800 border text-surface-900 dark:text-surface-100 text-sm px-4 py-3 rounded-lg outline-none transition-all placeholder:text-surface-400
+            ${focused ? "border-accent-500 ring-2 ring-accent-500/20" : "border-surface-200 dark:border-slate-700"}
+            ${error ? "border-red-500 ring-2 ring-red-500/20" : ""}
             ${isPassword ? "pr-10" : ""}`}
         />
         {isPassword && (
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 text-xs"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600 text-sm"
           >
             {show ? "●" : "○"}
           </button>
         )}
       </div>
-      {error && <p className="mt-1 text-xs text-rose-400 font-body">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
     </div>
   );
 }
@@ -54,13 +56,13 @@ function PasswordStrength({ password }) {
   if (!password) return null;
   return (
     <div className="mb-4">
-      <div className="flex gap-1 mb-1">
+      <div className="flex gap-1 mb-1.5">
         {[1,2,3,4,5].map((i) => (
-          <div key={i} className="flex-1 h-0.5 rounded-full transition-all duration-300"
-            style={{ backgroundColor: i <= score ? colors[score] : "#333" }} />
+          <div key={i} className="flex-1 h-1 rounded-full transition-all duration-300"
+            style={{ backgroundColor: i <= score ? colors[score] : "var(--border)" }} />
         ))}
       </div>
-      <span className="text-[11px] font-body" style={{ color: colors[score] }}>{labels[score]}</span>
+      <span className="text-xs font-medium" style={{ color: colors[score] }}>{labels[score]}</span>
     </div>
   );
 }
@@ -68,6 +70,7 @@ function PasswordStrength({ password }) {
 // ── Main AuthPage ──────────────────────────────────────────────────────────
 export default function AuthPage() {
   const { login, signup, loginWithGoogle } = useAuth();
+  const { theme, toggle } = useTheme();
   const [mode, setMode]     = useState("login");
   const [loading, setLoading] = useState(false);
   const [error, setError]   = useState("");
@@ -102,80 +105,76 @@ export default function AuthPage() {
   };
 
   const features = [
-    { icon: "◈", text: "AI-powered goal breakdown into daily tasks" },
-    { icon: "◉", text: "Adaptive planning that learns your pace" },
-    { icon: "◌", text: "Habit streaks and Pomodoro focus sessions" },
-    { icon: "◍", text: "Real-time analytics and progress charts" },
+    { icon: "✦", text: "AI-powered goal breakdown into daily tasks" },
+    { icon: "◎", text: "Adaptive planning that learns your pace" },
+    { icon: "↻", text: "Habit streaks and Pomodoro focus sessions" },
+    { icon: "◇", text: "Real-time analytics and progress charts" },
   ];
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 font-body">
-      {/* ── Left – dark editorial panel ── */}
-      <div className="hidden lg:flex flex-col justify-between bg-ink-950 p-14 relative overflow-hidden">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+      {/* ── Left – editorial panel ── */}
+      <div className="hidden lg:flex flex-col justify-between bg-accent-600 dark:bg-slate-900 p-14 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse at 20% 55%, rgba(61,122,87,0.10) 0%, transparent 65%)" }} />
+          style={{ background: "radial-gradient(ellipse at 20% 55%, rgba(255,255,255,0.08) 0%, transparent 65%)" }} />
 
         {/* Logo */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 border border-jade-500 flex items-center justify-center">
-            <span className="text-jade-500 text-xs">◈</span>
-          </div>
-          <span className="text-ink-400 text-xs tracking-[0.15em] uppercase font-display">Produx AI</span>
-        </div>
+        <LogoLight size="md" />
 
         {/* Headline */}
         <div>
-          <h1 className="font-display text-5xl font-bold text-ink-100 leading-tight tracking-tight mb-5">
+          <h1 className="text-5xl font-bold text-white leading-tight tracking-tight mb-5">
             {mode === "login"
-              ? (<>Your goals,<br /><span className="text-jade-400">amplified</span><br />by AI.</>)
-              : (<>Build the life<br />you've<br /><span className="text-jade-400">planned.</span></>)
+              ? (<>Your goals,<br /><span className="text-white/70">amplified</span><br />by AI.</>)
+              : (<>Build the life<br />you've<br /><span className="text-white/70">planned.</span></>)
             }
           </h1>
-          <p className="text-ink-500 text-sm leading-relaxed mb-8 max-w-xs">
+          <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-xs">
             An AI-driven system that converts your ambitions into daily achievable actions.
           </p>
           <div className="space-y-4">
             {features.map((f) => (
               <div key={f.text} className="flex items-start gap-3">
-                <span className="text-jade-500 mt-0.5 text-sm">{f.icon}</span>
-                <span className="text-ink-400 text-sm leading-relaxed">{f.text}</span>
+                <span className="text-white/80 mt-0.5 text-sm">{f.icon}</span>
+                <span className="text-white/70 text-sm leading-relaxed">{f.text}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Quote */}
-        <div className="border-l-2 border-jade-600 pl-4">
-          <p className="text-ink-500 text-sm italic leading-relaxed">
+        <div className="border-l-2 border-white/30 pl-4">
+          <p className="text-white/60 text-sm italic leading-relaxed">
             "A goal without a plan is just a wish."
           </p>
-          <p className="text-ink-600 text-xs mt-1 tracking-widest uppercase">Antoine de Saint-Exupéry</p>
+          <p className="text-white/40 text-xs mt-1 tracking-wide uppercase">Antoine de Saint-Exupéry</p>
         </div>
       </div>
 
       {/* ── Right – form ── */}
-      <div className="flex items-center justify-center bg-ink-900 px-8 py-12">
+      <div className="flex items-center justify-center bg-white dark:bg-slate-950 px-8 py-12 transition-colors">
         <div className="w-full max-w-sm">
 
           {/* Mobile logo */}
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-6 h-6 border border-jade-500 flex items-center justify-center">
-              <span className="text-jade-500 text-[10px]">◈</span>
-            </div>
-            <span className="text-ink-400 text-xs tracking-widest uppercase font-display">Produx AI</span>
+          <div className="flex items-center justify-between mb-8 lg:hidden">
+            <Logo size="sm" />
+            <button onClick={toggle}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-surface-500 hover:text-surface-700 dark:hover:text-surface-300 hover:bg-surface-100 dark:hover:bg-slate-800 transition-all">
+              {theme === "dark" ? "☀" : "☾"}
+            </button>
           </div>
 
-          <h2 className="font-display text-2xl font-bold text-ink-100 mb-1">
+          <h2 className="text-2xl font-bold text-surface-900 dark:text-surface-100 mb-1">
             {mode === "login" ? "Welcome back" : "Create account"}
           </h2>
-          <p className="text-ink-500 text-sm mb-7">
+          <p className="text-surface-500 text-sm mb-7">
             {mode === "login"
               ? "Sign in to your productivity workspace"
               : "Start your AI-powered journey today"}
           </p>
 
           {error && (
-            <div className="mb-5 px-3.5 py-2.5 bg-rose-500/10 border border-rose-500/30 rounded-sm text-rose-400 text-sm">
+            <div className="mb-5 px-4 py-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg text-red-600 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
@@ -192,17 +191,17 @@ export default function AuthPage() {
                 <Input label="Confirm Password" type="password" value={form.confirmPassword}
                   onChange={set("confirmPassword")} placeholder="Repeat your password" />
                 <div className="mb-5">
-                  <label className="block text-[11px] font-semibold tracking-widest uppercase text-ink-400 mb-2 font-display">
+                  <label className="block text-xs font-medium text-surface-600 dark:text-surface-400 mb-2">
                     I am a
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {["student", "professional"].map((t) => (
                       <button key={t} type="button"
                         onClick={() => setForm((p) => ({ ...p, userType: t }))}
-                        className={`py-2 text-sm rounded-sm border transition-all font-body capitalize
+                        className={`py-2.5 text-sm rounded-lg border transition-all capitalize font-medium
                           ${form.userType === t
-                            ? "bg-jade-600/20 border-jade-500 text-jade-400 font-medium"
-                            : "bg-ink-800 border-ink-600 text-ink-400"}`}
+                            ? "bg-accent-50 dark:bg-accent-500/10 border-accent-500 text-accent-600 dark:text-accent-400"
+                            : "bg-surface-50 dark:bg-slate-800 border-surface-200 dark:border-slate-700 text-surface-600 dark:text-surface-400"}`}
                       >
                         {t === "student" ? "🎓 Student" : "💼 Professional"}
                       </button>
@@ -213,21 +212,21 @@ export default function AuthPage() {
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-2.5 bg-jade-600 hover:bg-jade-500 disabled:opacity-60 text-white text-sm font-medium rounded-sm transition-colors mb-4 font-display tracking-wide">
+              className="w-full py-3 bg-accent-500 hover:bg-accent-600 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
               {loading ? "Please wait…" : mode === "login" ? "Sign In" : "Create Account"}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="relative my-4 flex items-center">
-            <div className="flex-1 h-px bg-ink-700" />
-            <span className="px-3 text-xs text-ink-500">or</span>
-            <div className="flex-1 h-px bg-ink-700" />
+          <div className="relative my-5 flex items-center">
+            <div className="flex-1 h-px bg-surface-200 dark:bg-slate-700" />
+            <span className="px-3 text-xs text-surface-400">or</span>
+            <div className="flex-1 h-px bg-surface-200 dark:bg-slate-700" />
           </div>
 
           {/* Google */}
           <button onClick={handleGoogle} disabled={loading}
-            className="w-full py-2.5 border border-ink-600 bg-ink-800 hover:bg-ink-700 text-ink-200 text-sm rounded-sm flex items-center justify-center gap-2.5 transition-colors mb-6 font-body">
+            className="w-full py-3 border border-surface-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-surface-50 dark:hover:bg-slate-700 text-surface-700 dark:text-surface-200 text-sm rounded-lg flex items-center justify-center gap-2.5 transition-colors mb-6 font-medium">
             <svg width="16" height="16" viewBox="0 0 48 48">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
               <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -237,10 +236,10 @@ export default function AuthPage() {
             Continue with Google
           </button>
 
-          <p className="text-center text-ink-500 text-sm">
+          <p className="text-center text-surface-500 text-sm">
             {mode === "login" ? "Don't have an account? " : "Already have an account? "}
             <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(""); }}
-              className="text-jade-400 hover:text-jade-300 font-medium transition-colors">
+              className="text-accent-500 hover:text-accent-600 font-medium transition-colors">
               {mode === "login" ? "Create one" : "Sign in"}
             </button>
           </p>

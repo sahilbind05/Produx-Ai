@@ -1,35 +1,45 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
-        display: ["Syne", "sans-serif"],
-        body: ["DM Sans", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
-        ink: {
-          950: "#0A0A0A",
-          900: "#111111",
-          800: "#1A1A1A",
-          700: "#252525",
-          600: "#333333",
-          500: "#555555",
-          400: "#888888",
-          300: "#AAAAAA",
-          200: "#CCCCCC",
-          100: "#F0EFEB",
+        surface: {
+          50: "#F9FAFB",
+          100: "#F3F4F6",
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#9CA3AF",
+          500: "#6B7280",
+          600: "#4B5563",
+          700: "#374151",
+          800: "#1F2937",
+          900: "#111827",
+          950: "#0F172A",
         },
-        jade: {
-          600: "#2D6A4F",
-          500: "#3D7A57",
-          400: "#52A873",
-          300: "#74C69D",
-          100: "#D8F3DC",
+        accent: {
+          50: "#EEF2FF",
+          100: "#E0E7FF",
+          200: "#C7D2FE",
+          300: "#A5B4FC",
+          400: "#818CF8",
+          500: "#6366F1",
+          600: "#4F46E5",
+          700: "#4338CA",
+          800: "#3730A3",
+          900: "#312E81",
         },
-        amber: { 500: "#F59E0B", 400: "#FBBF24", 100: "#FEF3C7" },
-        rose:  { 500: "#F43F5E", 100: "#FFE4E6" },
-        sky:   { 500: "#0EA5E9", 100: "#E0F2FE" },
+      },
+      backgroundImage: {
+        "brand-gradient": "linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%)",
+      },
+      borderRadius: {
+        xl: "0.75rem",
+        "2xl": "1rem",
       },
     },
   },
