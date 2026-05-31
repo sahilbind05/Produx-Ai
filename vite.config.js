@@ -7,12 +7,17 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // Gemini proxy — fixes CORS block in browser
       "/gemini": {
         target: "https://generativelanguage.googleapis.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/gemini/, ""),
+        secure: true,
       },
+      "/groq": {
+       target: "https://api.groq.com",
+        changeOrigin: true,
+       rewrite: (path) => path.replace(/^\/groq/, ""),
+},
     },
   },
 });
